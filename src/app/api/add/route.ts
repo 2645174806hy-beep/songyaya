@@ -12,7 +12,16 @@ export async function POST(request: Request) {
     if (error) return NextResponse.json({ error }, { status: 500 })
     return NextResponse.json({ success: true })
 } 
+// 修改（查询回显）
 
+// export async function GET(request: Request) { 
+//     const { searchParams } = new URL(request.url)
+//     const id = searchParams.get('id')
+//     const supabase = await createClient()
+//     const { data, error } = await supabase.from('books').select().eq('id', id)
+//     if (error) return NextResponse.json({ error }, { status: 500 })
+//     return NextResponse.json({ data })
+// }
 // 修改图书
 export async function PUT(request: Request) { 
     const { id, invoice, name, price, total } = await request.json()
