@@ -16,7 +16,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { Table } from "lucide-react"
 
 export default function Page() {
   return (

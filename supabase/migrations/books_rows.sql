@@ -1,0 +1,1 @@
+INSERT INTO "public"."books" ("id", "invoice", "name", "price", "total") VALUES ('9', 'INV006', '水浒传', '28', '2'), ('10', 'INV007', '西游记', '22', '8'), ('15', 'NV009', 'zz', '222', '2'), ('16', 'INV008', 'hy', '22', '2');

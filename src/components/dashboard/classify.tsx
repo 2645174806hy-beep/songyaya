@@ -14,6 +14,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
 // tableDEMO2上面指定api
 // 获取全部数据
 async function getArray() {
@@ -22,7 +23,7 @@ async function getArray() {
 // 
 export default function TableDemo2() {
   // 声明和管理多个组件的状态变量
-
+const [isDialogOpen, setIsDialogOpen] = useState(false);
   // 调用接口函数从后端获取数据
   const { data: classList} = useQuery({
     queryKey: ['todos'],
@@ -45,7 +46,7 @@ export default function TableDemo2() {
         </div>
       </div>
       {/* 新增按钮 */}
-      <Dialog>
+      <Dialog >
         <form>
           <DialogTrigger asChild>
             <Button variant="outline">新增</Button>

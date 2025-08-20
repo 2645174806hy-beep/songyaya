@@ -1,0 +1,1 @@
+INSERT INTO "public"."classify" ("id", "number", "name", "describe") VALUES ('1', 'nv1234', '经济', '经济');

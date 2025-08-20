@@ -6,5 +6,6 @@ export async function GET() {
     // 查询数据
     const {data,error}=await supbase.from('classify').select()
     console.log(data)
-    return new Response(JSON.stringify(data));
+    return new Response(JSON.stringify(data));   
 }
+//新增分类
