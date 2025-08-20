@@ -8,8 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useState } from "react"
-import { UpdateForm } from "../dialog/users"
-
 const invoices = [
   {
     invoice: "INV001",
@@ -101,20 +99,7 @@ export default function TableDemo() {
                     <TableCell className="flex items-center justify-center p-2 border-r border-gray-300">{invoice.totalAmount}</TableCell>
                     <TableCell className="flex items-center justify-center p-2 border-r border-gray-300">{invoice.totalAmount}</TableCell>
                     <TableCell className="flex items-center justify-center gap-2 p-2">
-                      <button onClick={() => setIsOpen(true)} className="bg-yellow-500 text-white px-3 py-1 rounded">修改</button>
-                      {isOpen && (
-                        <div className="fixed inset-0 flex items-center justify-center  ">
-                          <div className="bg-white p-6 rounded-lg bg-gray-900 bg-opacity-50 shadow-lg">
-                            <UpdateForm />
-                            <button
-                              onClick={() => setIsOpen(false)}
-                              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded justify-end float-right"
-                            >
-                              关闭
-                            </button>
-                          </div>
-                        </div>
-                      )}
+                      <button className="bg-yellow-500 text-white px-3 py-1 rounded">修改</button>
                       <button className="bg-red-500 text-white px-3 py-1 rounded">删除</button>
                     </TableCell>
                   </TableRow>
