@@ -40,7 +40,7 @@ export default function Page() {
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 bg-blue-50 ">
+        <div className="flex flex-1 flex-col gap-4 p-4 ">
                   <TableDemo/>
         </div>
       </SidebarInset>

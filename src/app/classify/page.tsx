@@ -1,10 +1,7 @@
-"use client"
-import { useState } from 'react';
 import { ChartPieLabel } from "@/components/dashboard"
 import { AppSidebar } from "@/components/dashboard/app-sidebar"
 import TableDemo from "@/components/dashboard/cont"
-import TableDemo2 from "@/components/dashboard/fenlei"
-import TableDemo3 from "@/components/dashboard/user"
+import TableDemo2 from "@/components/dashboard/classify"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -22,7 +19,6 @@ import {
 import { Table } from "lucide-react"
 
 export default function Page() {
-  const [isOpen, setIsOpen] = useState(false);
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -42,13 +38,13 @@ export default function Page() {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>用户信息管理</BreadcrumbPage>
+                <BreadcrumbPage>图书分类管理</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4  bg-blue-50">
-                  <TableDemo3/>
+        <div className="flex flex-1 flex-col gap-4 p-4 ">
+                  <TableDemo2/>
         </div>
       </SidebarInset>
     </SidebarProvider>

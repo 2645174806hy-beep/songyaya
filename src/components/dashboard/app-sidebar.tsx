@@ -14,9 +14,12 @@ import {
 import { 
   Cat, 
 } from 'lucide-react'; //
+import { VersionSwitcher } from "./version-switcher";
+import { SearchForm } from "./search-form";
 
 // This is sample data.
 const data = {
+  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
       title: "图书管理系统",
@@ -32,15 +35,11 @@ const data = {
         },
         {
           title: "图书分类管理",
-          url: "/fenlei",
-        },
-        {
-          title: "用户信息管理",
-          url: "/user",
+          url: "/classify",
         },
         {
           title: "修改密码",
-          url: "./updatepsd",
+          url: "./updatePassWord",
         },
         {
           title: "退出登录",
@@ -56,22 +55,25 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
-      <SidebarContent >
+      <SidebarHeader>
+        <VersionSwitcher
+          versions={data.versions}
+          defaultVersion={data.versions[0]}
+        />
+        <SearchForm />
+      </SidebarHeader>
+      <SidebarContent>
+        {/* We create a SidebarGroup for each parent. */}
         {data.navMain.map((item) => (
-          <SidebarGroup key={item.title} className="font-color-black text-sm">  
-            
-            <SidebarGroupLabel className="text-2xl flex items-center gap-2" >
-              <Cat className="w-10 h-10" />{item.title}</SidebarGroupLabel>
+          <SidebarGroup key={item.title}>
+            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu className="my-6">
+              <SidebarMenu>
                 {item.items.map((item) => (
-
-                  <SidebarMenuItem key={item.title}  className="my-1">
-                   
-                    <SidebarMenuButton asChild  className="justify-center w-full ">
-                      <a href={item.url} className="text-lg font-medium">{item.title}</a>
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild isActive={item.isActive}>
+                      <a href={item.url}>{item.title}</a>
                     </SidebarMenuButton>
-                    
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
@@ -83,3 +85,4 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     </Sidebar>
   )
 }
+

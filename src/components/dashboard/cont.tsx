@@ -2,23 +2,20 @@
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-  DialogTitle,
-  DialogDescription
-} from "@radix-ui/react-dialog"
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { SetStateAction, useState } from "react"
+import { useState } from "react"
 import { Input } from "../ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "../ui/button"
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 //获取全部图书
 async function getArray() {
   return await fetch('api/dashboard', { method: 'POST' }).then(res => res.json())
@@ -51,7 +48,7 @@ async function addBook(book: any) {
   }).then(res => res.json())
 }
 // 修改图书
-async function updateBook(book: any) { 
+async function updateBook(book: any) {
   return await fetch('api/add', {
     method: 'PUT',
     headers: {
@@ -79,7 +76,7 @@ export default function TableDemo() {
     }))
   }
 
-  
+
   const queryClient = useQueryClient()
   // 获取数据
   const { data: invoices, isLoading, error } = useQuery({
@@ -154,7 +151,7 @@ export default function TableDemo() {
       alert("请填写序号和书名")
       return
     }
-  
+
     // 根据是否有 editingBook 来判断是更新还是新增
     if (editingBook) {
       // 编辑模式 - 包含 ID
@@ -174,7 +171,7 @@ export default function TableDemo() {
     <>
       {/* 搜索栏 */}
 
-      <div className="w-full flex justify-center mt-4 bg-blue-50">
+      <div className="w-full flex justify-center mt-4 ">
         <div className="w-[30%] flex items-center mx-auto">
           <input
             type="text"
@@ -182,127 +179,118 @@ export default function TableDemo() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="border rounded-l px-4 py-2 w-[60%] h-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            onClick={handleSearchClick}
-            className="bg-orange-400 text-white h-8 px-4 rounded-r hover:bg-orange-600"
-          >
-            搜索
-          </button>
+          />&nbsp;
+
+          <div className="flex flex-wrap items-center gap-2 md:flex-row">
+            <Button onClick={handleSearchClick}>搜索</Button>&nbsp;&nbsp;
+          </div>
           {activeSearchTerm && (
-            <button
-              onClick={handleClearSearch}
-              className="bg-gray-400 text-white h-8 px-4 ml-2 rounded hover:bg-gray-600"
-            >
-              清除
-            </button>
+            <div className="flex flex-wrap items-center gap-2 md:flex-row">
+              <Button onClick={handleClearSearch}>清除</Button>
+            </div>
           )}
         </div>
       </div>
       {/* 新增按钮 */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogTrigger asChild>
-          <button className="bg-blue-500 text-white h-8 px-4 rounded hover:bg-blue-600 w-[100px]">
-            新增
-          </button>
-        </DialogTrigger>
-        <DialogContent className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-white p-6 shadow-lg duration-200 sm:rounded-lg">
-          <DialogTitle className="text-lg font-medium">新增图书</DialogTitle>
-          <DialogDescription>
-            请填写图书信息
-          </DialogDescription>
-          <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="invoice">
-                序号
-              </Label>
-              <Input
-                id="invoice"
-                className="col-span-3"
-                value={newBook.invoice}
-                onChange={handleInputChange}
-              />
+        <form>
+          <DialogTrigger asChild>
+            <Button variant="outline">新增图书</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>图书管理</DialogTitle>
+              <DialogDescription>
+                请输入相关信息
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4">
+              <div className="grid gap-3">
+                <Label htmlFor="invoice">序号</Label>
+                <Input
+                  id="invoice"
+                  className="col-span-3"
+                  value={newBook.invoice}
+                  onChange={handleInputChange} />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="name">
+                  书名
+                </Label>
+                <Input
+                  id="name"
+                  className="col-span-3"
+                  value={newBook.name}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="price">
+                  价格
+                </Label>
+                <Input
+                  id="price"
+                  type="number"
+                  className="col-span-3"
+                  value={newBook.price}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="total">
+                  数量
+                </Label>
+                <Input
+                  id="total"
+                  type="number"
+                  className="col-span-3"
+                  value={newBook.total}
+                  onChange={handleInputChange}
+                />
+              </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name">
-                书名
-              </Label>
-              <Input
-                id="name"
-                className="col-span-3"
-                value={newBook.name}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="price">
-                价格
-              </Label>
-              <Input
-                id="price"
-                type="number"
-                className="col-span-3"
-                value={newBook.price}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="total">
-                数量
-              </Label>
-              <Input
-                id="total"
-                type="number"
-                className="col-span-3"
-                value={newBook.total}
-                onChange={handleInputChange}
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-              取消
-            </Button>
-            <Button onClick={() => handleSave()} disabled={addMutation.isPending}>
-              保存
-            </Button>
-          </div>
-        </DialogContent>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline" >取消</Button>
+              </DialogClose>
+              <DialogClose asChild>
+              <Button type="submit" onClick={() => handleSave()} disabled={addMutation.isPending}>保存</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </form>
       </Dialog>
       {/* // 表格 */}
-      <div className="flex justify-center w-full bg-white py-15 px-4 rounded-lg shadow-xl p-6">
-        <div className="flex justify-around w-[100%] ">
-          <div className="w-[80%] border border-gray-300">
-            <Table>
-              <TableHeader>
-                <TableRow className="flex border-gray-300">
-                  <TableHead className="flex-1 flex items-center justify-center border-r border-gray-300">序号</TableHead>
-                  <TableHead className="flex-1 flex items-center justify-center border-r border-gray-300">名称</TableHead>
-                  <TableHead className="flex-1 flex items-center justify-center border-r border-gray-300">价格</TableHead>
-                  <TableHead className="flex-1 flex items-center justify-center border-r border-gray-300">数量</TableHead>
-                  <TableHead className="flex-1 flex items-center justify-center border-gray-300">操作</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {invoices?.map((invoice) => (
-                  <TableRow className="flex border-gray-300" key={invoice.invoice}>
-                    <TableCell className="flex-1 flex items-center justify-center border-r border-gray-300">{invoice.invoice}</TableCell>
-                    <TableCell className="flex-1 flex items-center justify-center border-r border-gray-300">{invoice.name}</TableCell>
-                    <TableCell className="flex-1 flex items-center justify-center border-r border-gray-300">{invoice.price}</TableCell>
-                    <TableCell className="flex-1 flex items-center justify-center border-r border-gray-300">{invoice.total}</TableCell>
-                    <TableCell className="flex-1 flex items-center justify-center border-gray-300">
-                      <button className="bg-yellow-500 text-white px-5 py-1 mx-5 rounded" onClick={() => handleEdit(invoice)}>修改</button>
-                      <button className="bg-red-500 text-white px-5 py-1 rounded" onClick={() => handleDelete(invoice.id)}
-                        disabled={deleteMutation.isPending}>删除</button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+      <Table>
+        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">序号</TableHead>
+            <TableHead>书名</TableHead>
+            <TableHead>价格</TableHead>
+            <TableHead className="text-right">数量</TableHead>
+            <TableHead className="text-right">操作</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {invoices?.map((invoice) => (
+            <TableRow key={invoice.invoice}>
+              <TableCell className="font-medium">{invoice.invoice}</TableCell>
+              <TableCell>{invoice.name}</TableCell>
+              <TableCell>{invoice.price}</TableCell>
+              <TableCell className="text-right">{invoice.total}</TableCell>
+              <TableCell className="text-right">
+                <Button onClick={() => handleEdit(invoice)}>修改</Button>&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => handleDelete(invoice.id)} disabled={deleteMutation.isPending} variant="destructive">删除</Button>
+              </TableCell>
+              <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
 
-        </div>
-      </div>
+        </TableFooter>
+      </Table>
     </>
   )
 }

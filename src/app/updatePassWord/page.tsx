@@ -1,8 +1,7 @@
 import { ChartPieLabel } from "@/components/dashboard"
 import { AppSidebar } from "@/components/dashboard/app-sidebar"
 import TableDemo from "@/components/dashboard/cont"
-import TableDemo2 from "@/components/dashboard/fenlei"
-import TableDemo3 from "@/components/dashboard/user"
+import TableDemo2 from "@/components/dashboard/classify"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,7 +16,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { UpdateForm } from "@/components/updatepsd/update"
+import { UpdateForm } from "@/components/updatePassWord/update"
 import { Table } from "lucide-react"
 
 export default function Page() {
@@ -45,7 +44,7 @@ export default function Page() {
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4  bg-blue-50">
+        <div className="flex flex-1 flex-col gap-4 p-4 ">
                   <UpdateForm/>
         </div>
       </SidebarInset>
