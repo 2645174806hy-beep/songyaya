@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-
+import ProfileForm from "@/components/addbookform/addBookForm"
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from "react"
 import { Input } from "../ui/input"
@@ -38,25 +38,25 @@ async function searchBook(searchParams: string) {
   return await fetch('api/dashboard?searchParams=' + searchParams).then(res => res.json())
 }
 // 新增图书
-async function addBook(book: any) {
-  return await fetch('api/add', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(book),
-  }).then(res => res.json())
-}
+// async function addBook(book: any) {
+//   return await fetch('api/add', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(book),
+//   }).then(res => res.json())
+// }
 // 修改图书
-async function updateBook(book: any) {
-  return await fetch('api/add', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(book),
-  }).then(res => res.json())
-}
+// async function updateBook(book: any) {
+//   return await fetch('api/add', {
+//     method: 'PUT',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(book),
+//   }).then(res => res.json())
+// }
 export default function TableDemo() {
   const [searchTerm, setSearchTerm] = useState("")
   const [activeSearchTerm, setActiveSearchTerm] = useState("") // 用于存储实际搜索的词
@@ -68,15 +68,6 @@ export default function TableDemo() {
     price: "",
     total: ""
   })
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target
-    setNewBook(prev => ({
-      ...prev,
-      [id]: id === "name" || id === "invoice" ? value : Number(value)
-    }))
-  }
-
-
   const queryClient = useQueryClient()
   // 获取数据
   const { data: invoices, isLoading, error } = useQuery({
@@ -106,64 +97,18 @@ export default function TableDemo() {
     setSearchTerm("")
     setActiveSearchTerm("")
   }
-  // 新增操作
-  const addMutation = useMutation({
-    mutationFn: addBook,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] })
-      setIsDialogOpen(false)
-      setNewBook({
-        invoice: "",
-        name: "",
-        price: "",
-        total: ""
-      })
-    },
-  })
-  const updateMutation = useMutation({
-    mutationFn: updateBook,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] })
-      setIsDialogOpen(false)
-      setEditingBook(null)
-      setNewBook({
-        invoice: "",
-        name: "",
-        price: "",
-        total: ""
-      })
-    },
-  })
   const handleEdit = (book: any) => {
     setEditingBook(book)
-    setNewBook({
-      invoice: book.invoice,
-      name: book.name,
-      price: book.price,
-      total: book.total
-    })
+    // setNewBook({
+    //   invoice: book.invoice,
+    //   name: book.name,
+    //   price: book.price,
+    //   total: book.total
+    // })
     setIsDialogOpen(true)
+    console.log("Editing book:", book); // 添加日志
   }
-  // 处理保存
-  const handleSave = () => {
-    // 验证必填字段
-    if (!newBook.invoice || !newBook.name) {
-      alert("请填写序号和书名")
-      return
-    }
-
-    // 根据是否有 editingBook 来判断是更新还是新增
-    if (editingBook) {
-      // 编辑模式 - 包含 ID
-      updateMutation.mutate({
-        ...newBook,
-        id: editingBook.id
-      })
-    } else {
-      // 新增模式
-      addMutation.mutate(newBook)
-    }
-  }
+  
   if (isLoading) return <div>加载中...</div>
   if (error) return <div>加载失败: {error.message}</div>
 
@@ -193,72 +138,22 @@ export default function TableDemo() {
       </div>
       {/* 新增按钮 */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <form>
           <DialogTrigger asChild>
-            <Button variant="outline">新增图书</Button>
+            <div className="w-full flex mt-4 ">
+            <Button variant="outline"  onClick={() => setEditingBook(null)}>新增图书</Button>
+            </div>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>图书管理</DialogTitle>
+              <DialogTitle>{editingBook ? '修改图书' : '新增图书'}</DialogTitle>
               <DialogDescription>
-                请输入相关信息
+                {editingBook ? '修改图书信息' : '添加图书信息'}
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4">
-              <div className="grid gap-3">
-                <Label htmlFor="invoice">序号</Label>
-                <Input
-                  id="invoice"
-                  className="col-span-3"
-                  value={newBook.invoice}
-                  onChange={handleInputChange} />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="name">
-                  书名
-                </Label>
-                <Input
-                  id="name"
-                  className="col-span-3"
-                  value={newBook.name}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="price">
-                  价格
-                </Label>
-                <Input
-                  id="price"
-                  type="number"
-                  className="col-span-3"
-                  value={newBook.price}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="total">
-                  数量
-                </Label>
-                <Input
-                  id="total"
-                  type="number"
-                  className="col-span-3"
-                  value={newBook.total}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
+           <ProfileForm book={editingBook} onSuccess={() => setIsDialogOpen(false)}/>
             <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline" >取消</Button>
-              </DialogClose>
-              <DialogClose asChild>
-              <Button type="submit" onClick={() => handleSave()} disabled={addMutation.isPending}>保存</Button>
-              </DialogClose>
             </DialogFooter>
           </DialogContent>
-        </form>
       </Dialog>
       {/* // 表格 */}
       <Table>
@@ -280,7 +175,7 @@ export default function TableDemo() {
               <TableCell>{invoice.price}</TableCell>
               <TableCell className="text-right">{invoice.total}</TableCell>
               <TableCell className="text-right">
-                <Button onClick={() => handleEdit(invoice)}>修改</Button>&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => handleEdit(invoice)}>修改</Button>
                 <Button onClick={() => handleDelete(invoice.id)} disabled={deleteMutation.isPending} variant="destructive">删除</Button>
               </TableCell>
               <TableCell className="text-right">{invoice.totalAmount}</TableCell>

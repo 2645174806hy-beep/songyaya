@@ -1,6 +1,5 @@
 import { ChartPieLabel } from "@/components/dashboard"
 import { AppSidebar } from "@/components/dashboard/app-sidebar"
-import TableDemo from "@/components/dashboard/cont"
 import TableDemo2 from "@/components/dashboard/classify"
 import {
   Breadcrumb,
@@ -44,7 +43,7 @@ export default function Page() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 ">
                   <TableDemo2/>
-        </div>
+        </div> 
       </SidebarInset>
     </SidebarProvider>
   )

@@ -13,8 +13,9 @@ import { Button } from "../ui/button"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { useState } from "react"
+import ProfileForm from "../addbookform/addBookForm"
 // tableDEMO2上面指定api
 // 获取全部数据
 async function getArray() {
@@ -25,6 +26,7 @@ export default function TableDemo2() {
   // 声明和管理多个组件的状态变量
 const [isDialogOpen, setIsDialogOpen] = useState(false);
   // 调用接口函数从后端获取数据
+  // 获取全部数据
   const { data: classList} = useQuery({
     queryKey: ['todos'],
     queryFn: getArray,
@@ -58,7 +60,10 @@ const [isDialogOpen, setIsDialogOpen] = useState(false);
                 请输入相关信息
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4">
+            <div className="grid gap-3"> 
+              <ProfileForm/>
+            </div>
+            {/* <div className="grid gap-4">
               <div className="grid gap-3">
                 <Label htmlFor="invoice">序号</Label>
                 <Input
@@ -85,7 +90,7 @@ const [isDialogOpen, setIsDialogOpen] = useState(false);
                   className="col-span-3"
                   />
               </div>
-            </div>
+            </div> */}
             <DialogFooter>
               <DialogClose asChild>
                 <Button variant="outline" >取消</Button>
@@ -116,7 +121,7 @@ const [isDialogOpen, setIsDialogOpen] = useState(false);
               <TableCell>{invoice.describe}</TableCell>
               <TableCell className="text-right">
                 <Button >修改</Button>&nbsp;&nbsp;&nbsp;
-                <Button variant="destructive">删除</Button>
+                <Button variant="destructive" onClick={() => handleDelete(invoice.id)}>删除</Button>
               </TableCell>
             </TableRow>
           ))}
